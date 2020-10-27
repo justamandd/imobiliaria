@@ -10,7 +10,7 @@
     
         Login: <input type="text" name="login" id="login"></br>
         Senha: <input type="password" name="senha" id="senha"></br>
-        Confirmação da Senha: <input type="password" name="senha2" id="senha2">
+        Confirmação da Senha: <input type="password" name="senha2" id="senha2"></br>
         <select name="permissao" id="permissao">
             <option value="0" selected></option>
             <option value="A">Administrador</option>
