@@ -1,2 +1,2 @@
-# imobiliaria
- Projeto PW, php conectado com banco de dados
+# Imobiliária
+ Projeto de aprendizado.
