@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro de Usuário</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
     <style>
         .centered{
             height: 100vh;
@@ -12,50 +5,73 @@
             justify-content: center;
             align-items: center;
         }
-        .column{
-            justify-content: column;
+        #cadUsuario{
+            width: 25vw;
+            margin: 2rem;
         }
-        .center{
-            text-align: center;
-            justify-content: center;
-        }
-
     </style>
 </head>
 <body>
     <div class="container">
         <div class="centered">
-            <div>
-                    <h1 class="center">Cadastro</h1>
-                <form action="" method="post" id="cadUsuario" name="cadUsuario" class="column center">
-                    <div class="form-group row">
-                        <input type="text" name="login" id="login" placeholder="Usuário" class="form-control form-control-lg" required></br>
-                    </div>
-                    <div class="form-group row">
-                        <input type="password" name="senha" id="senha" placeholder="Senha" class="form-control form-control-lg" required></br>
-                    </div>
+            <!-- Form Cadastro -->
+            <form action="" method="post" id="cadUsuario" name="cadUsuario">
+                <!-- Card Init -->
+                <div class="card text-center">
 
-                    <div class="form-group row">
-                        <select name="permissao" id="permissao" class="form-control form-control-lg" required>
-                            <option value="0" selected disabled>Selecione a Permissão</option>
-                            <option value="A">Administrador</option>
-                            <option value="C">Comúm</option>
-                        </select>
+                    <!-- Card Header -->
+                    <div class="card-header">
+                        <h1 class="card-title">Cadastro</h1>
                     </div>
 
-                    <button type="submit" name="btnSalvar" id="btnSalvar" class="btn btn-success">Salvar</button>
+                    <!-- Card Body -->
+                    <div class="card-body">
 
-                </form>
-            </div>
+                        <!-- Login -->
+                        <div class="form-group">
+                            <input type="text" name="login" id="login" placeholder="Usuário" class="form-control form-control-lg" value="<?php echo isset($usuario)?$usuario->getLogin():'' ?>" required>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="form-group">
+                            <input type="password" name="senha" id="senha" placeholder="Senha" class="form-control form-control-lg" value="<?php echo isset($usuario)?$usuario->getSenha():'' ?>" required>
+                        </div>
+
+                        <!-- Password Confirm -->
+                        <div class="form-group">
+                            <input type="password" name="senhaConfirm" id="senhaConfirm" placeholder="Confirmação" class="form-control form-control-lg" required>
+                        </div>
+
+                        <!-- Select Permission -->
+                        <div class="form-group">
+                            <select name="permissao" id="permissao" class="form-control form-control-lg" required>
+                                <option value="0" selected disabled>Selecione a Permissão</option>
+                                <option value="A" <?php echo isset($usuario) && $usuario->getPermissao()=='A'?'selected':'' ?>>Administrador</option>
+                                <option value="C" <?php echo isset($usuario) && $usuario->getPermissao()=='C'?'selected':'' ?>>Comúm</option>
+                            </select>
+                        </div>
+                        <!-- <h5><a href="listUsuario">Listar Usuários</a></h5> -->
+                    </div>
+
+                    <!-- Card Footer -->
+                    <div class="card-footer">
+                        <!-- Input Hidden -->
+                        <input type="hidden" name="id" id="id" value="<?php echo isset($usuario)?$usuario->getId():'';?>">
+                        <!-- Submit Button -->
+                        <button type="submit" name="btnEnviar" id="btnEnviar" class="btn btn-success">Enviar</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
-</body>
-</html>
 <?php
-    if(isset($_POST['btnSalvar'])){
-        require_once '../controller/UsuarioController.php';
+    //verifica se o botão submit foi acionado
+    if(isset($_POST['btnEnviar'])){
+        //importa o UsuarioController.php
+        require_once 'controller/UsuarioController.php';
+        //Chama uma função php que permite informar a classe método que será acionado 
         call_user_func(array('UsuarioController','salvar'));
+
+        header('Location: index.php?action=listar');
     }
 ?>
