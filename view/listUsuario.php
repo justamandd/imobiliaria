@@ -15,7 +15,7 @@
                     <h1 class="card-title">Usuários</h1>
                 </div>
                 <div class="card-body">
-                    <table class="table table-hover">
+                    <table class="table table-bordered">
                         <thead>
                             <tr>
                                 <th>Login</th>
