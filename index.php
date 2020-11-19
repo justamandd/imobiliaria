@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 //Requisitando UsuarioController.php
 require_once 'controller/UsuarioController.php';
 ?>
@@ -10,6 +12,9 @@ require_once 'header.php';
 
 <?php
 if(isset($_GET['action'])){
+    require_once 'view/menu.php';
+
+
     if($_GET['action'] == 'editar'){
         $usuario = call_user_func(array('UsuarioController','editar'), $_GET['id']);
         require_once 'view/cadUsuario.php'; 
@@ -22,7 +27,11 @@ if(isset($_GET['action'])){
         require_once 'view/listUsuario.php';
     }
 }else{
-    require_once 'view/cadUsuario.php'; 
+    if(isset($_GET['logar'])){
+        require_once 'view/login.php';
+    }else{
+        require_once 'principal.php';
+    }
 }
 ?>
 

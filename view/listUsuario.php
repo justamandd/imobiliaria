@@ -1,12 +1,3 @@
-    <style>
-        .centered{
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-    </style>
 <div class="container">
     <div class="centered">
         <div class="col-sm-6">

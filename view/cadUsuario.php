@@ -1,15 +1,3 @@
-    <style>
-        .centered{
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        #cadUsuario{
-            width: 25vw;
-            margin: 2rem;
-        }
-    </style>
 </head>
 <body>
     <div class="container">
