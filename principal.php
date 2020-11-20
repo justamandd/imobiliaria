@@ -7,7 +7,7 @@
             <a href="#" class="nav-link">Comprar</a>
         </li>
         <li class="nav-item">
-            <a href="index.php?logar" class="nav-link right"><i class="fa fa-lock" aria-hidden="true">Login</i></a>
+            <a href="index.php?logar" class="nav-link right"><i class="fa fa-lock" aria-hidden="true"></i></a>
         </li>
     </ul>
 </nav>

@@ -3,7 +3,7 @@ class Conexao{
 
     private $servername = "localhost:3306";
     private $username = "root";
-    private $password = "19cscrjfVITOR@";
+    private $password = "master";
     private $database = "imobiliaria";
     private $connection;
 
