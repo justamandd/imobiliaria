@@ -1,37 +1,51 @@
 <?php
 require_once 'Banco.php'; 
 require_once './Conexao.php';
-class Usuario extends Banco{
+class Imovel extends Banco{
 
     private $id;
-    private $login;
-    private $senha;
-    private $permissao;
+    private $descricao;
+    private $foto;
+    private $valor;
+    private $tipo;
+    private $fotoTipo;
 
     public function getId(){
         return $this->id;
     }
-    public function getLogin(){
-        return $this->login;
+    public function getDescricao(){
+        return $this->descricao;
     }
-    public function getSenha(){
-        return $this->senha;
+    public function getFoto(){
+        return $this->foto;
     }
-    public function getPermissao(){
-        return $this->permissao;
+    public function getValor(){
+        return $this->valor;
+    }
+    public function getTipo(){
+        return $this->tipo;
+    }
+    public function getFotoTipo(){
+        return $this->fotoTipo;
     }
 
     public function setId($id){
         $this->id = $id;
     }
-    public function setLogin($login){
-        $this->login = $login;
+    public function setDescricao($descricao){
+        $this->descricao = $descricao;
     }
-    public function setSenha(){
-        $this->senha = md5($senha);
+    public function setFoto($foto){ // mudar
+        $this->foto = $foto;
     }
-    public function setPermissao($permissao){
-        $this->permissao = $permissao;
+    public function setValor($valor){
+        $this->valor = $valor;
+    }
+    public function setTipo($tipo){
+        $this->tipo = $tipo;
+    }
+    public function setFotoTipo($fotoTipo){
+        $this->fotoTipo = $fotoTipo;
     }
 
     public function save(){
@@ -42,18 +56,18 @@ class Usuario extends Banco{
         if($conn = $conexao->getConnection()){
             if($this->id > 0){
                 //cria a query de inserção passando atributos que serão atualizados 
-                $query = "UPDATE usuario SET login = :login, senha = :senha, permissao = :permissao where id = :id";
+                $query = "UPDATE imovel SET descricao = :descricao, foto = :foto, valor = :valor where id = :id";
                 //prepara query para execução
                 $stmt = $conn->prepare($query);
                 //executa query
-                if($stmt->execute(array(':login'=>$this->login, ':senha'=>$this->senha, ':permissao'=>$this->permissao, ':id'=>$this->id))){
+                if($stmt->execute(array(':descricao'=>$this->descricao, ':foto'=>$this->foto, ':valor'=>$this->valor, ':id'=>$this->id))){
                     $result = $stmt->rowCount();
                 }  
             }else{
                 //cria query de inserção passando os atributos que serão armazenados
-                $query = "INSERT INTO usuario (id, login, senha, permissao) values (null, :login, :senha, :permissao)";
+                $query = "INSERT INTO imovel (id, descricao, foto, valor, tipo, fotoTipo) values (null, :descricao, :foto, :valor, :tipo, :fotoTipo)";
                 $stmt = $conn->prepare($query);
-                if($stmt->execute(array(':login'=>$this->login, ':senha'=>$this->senha, ':permissao'=>$this->permissao))){
+                if($stmt->execute(array(':descricao'=>$this->descricao, ':foto'=>$this->foto, ':valor'=>$this->valor, ':tipo'=>$this->tipo, ':fotoTipo'=>$this->fotoTipo))){
                     $result = $stmt->rowCount();
                 }
             }
@@ -65,7 +79,7 @@ class Usuario extends Banco{
         $result = false;
         $conexao = new Conexao();
         $conn = $conexao->getConnection();
-        $query = "DELETE FROM usuario WHERE id = :id";
+        $query = "DELETE FROM imovel WHERE id = :id";
         $stmt = $conn->prepare($query);
         if($stmt->execute(array(':id'=>$id))){
             $result = true;
@@ -76,11 +90,11 @@ class Usuario extends Banco{
     public function find($id){
         $conexao = new Conexao();
         $conn = $conexao->getConnection();
-        $query = "SELECT * FROM usuario WHERE id = :id";
+        $query = "SELECT * FROM imovel WHERE id = :id";
         $stmt = $conn->prepare($query);
         if($stmt->execute(array(':id'=> $id))){
             if($stmt->rowCount() > 0){
-                $result = $stmt->fetchObject(Usuario::class);
+                $result = $stmt->fetchObject(Imovel::class);
             }else{
                 $result = false;
             }
@@ -89,6 +103,15 @@ class Usuario extends Banco{
     }
 
     public function count(){
+        $conexao = new Conexao();
+        $conn = $conexao->getConnection();
+        $query = 'SELECT count(*) FROM imovel';
+        $stmt = $conn->prepare($query);
+        $count = $stmt->exec(); //perguntar -----------------------------á
+        if(isset($count) && !empty($count)){
+            return $count;
+        }
+        return false;
     }
     
     public function listAll(){
@@ -97,44 +120,39 @@ class Usuario extends Banco{
         //cria a conexão com o banco de dados
         $conn = $conexao->getConnection();
         //cria a query de seleção
-        $query = "Select * from usuario";
+        $query = "Select * from imovel";
         //cria um array para receber o resultado da seleção
         $stmt = $conn->prepare($query);
         //executa a query
         $result = array();
 
-
-
-
-        // DUVIDA !!!!! DUVIDA DUVIDA DUVIDA
         if($stmt->execute()){
             //o resultado da busca será retornado como um objeto da classe
-            while($rs = $stmt->fetchObject(Usuario::class)){
+            while($rs = $stmt->fetchObject(Imovel::class)){
                 //armazena esse objeto em uma posição do vetor
                 $result[] = $rs;
             }
-
         }else{
-
             $result = false;
-
         }
-
         return $result;
     }
 
-    public function logar(){
+    public function listAllTipo($tipo){
         $conexao = new Conexao();
         $conn = $conexao->getConnection();
-        $query = "SELECT * FROM usuario WHERE login = :login and senha = :senha";
+        $query = "SELECT * FROM imovel WHERE tipo = :tipo";
         $stmt = $conn->prepare($query);
-        if ($stmt->execute(array(':login'=>$this->login, ':senha'=>$this->senha))){
-            if ($stmt->rowCount() > 0){
-                $result = true;
-            }else{
-                $result = false;
+        $result = array();
+
+        if($stmt->execute(array(':tipo'=>$tipo))){
+            while($rs = $stmt->fetchObject(Imovel::class)){
+                $result[] = $rs;
             }
+        }else{
+            $result = false;
         }
+
         return $result;
     }
 }
